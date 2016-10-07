@@ -137,24 +137,9 @@ class Labyrinthe:
                 if obstacle:
                     obstacle.arriver(self, robot)
 
-                # On enregistre la partie
-                self.enregistrer()
-
         # Si il y a plus d'un déplacement, rappelle la méthode
         if not self.gagnee and nombre > 1:
             self.deplacer_robot(direction, nombre - 1)
-
-    # Méthodes d'enregistrement
-    def enregistrer(self):
-        """Enregistre la partie en cours."""
-        with open(FICHIER_ENREGISTREMENT, "wb") as fichier:
-            pic = pickle.Pickler(fichier)
-            pic.dump(self)
-
-    def detruire(self):
-        """Destruction du fichier de partie en cours."""
-        if os.path.exists(FICHIER_ENREGISTREMENT):
-            os.remove(FICHIER_ENREGISTREMENT)
 
 
 def creer_labyrinthe_depuis_chaine(chaine):
@@ -198,16 +183,3 @@ def creer_labyrinthe_depuis_chaine(chaine):
 
     labyrinthe = Labyrinthe(robot, obstacles)
     return labyrinthe
-
-def charger_labyrinthe():
-    """Charge le labyrinthe si le fichier d'enregistrement est trouvé.
-
-    Si le fichier n'existe pas, retourne None.
-
-    """
-    if os.path.exists(FICHIER_ENREGISTREMENT):
-        with open(FICHIER_ENREGISTREMENT, "rb") as fichier:
-            unpic = pickle.Unpickler(fichier)
-            return unpic.load()
-
-    return None
